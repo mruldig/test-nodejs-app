@@ -10,19 +10,28 @@ pipeline {
         }
      }
      
-     stage('Test') { 
-        steps { 
-           sh 'echo "testing application..."'
-        }
-      }
-
-         stage("Deploy Aapplication") { 
-         steps { 
-           sh 'echo "deploying application..."'
+     stage('master branch') { 
+       when {
+         anyOf {
+             branch 'master';
          }
-
+       }
+       steps { 
+           sh 'echo "running only on master branch"'
+       }
      }
-  
-   	}
 
+     stage('Non master branch') { 
+       when {
+         not {
+           anyOf {
+               branch 'master';
+           }
+         }
+       }
+       steps { 
+           sh 'echo "running on non-master branch"'
+       }
+     }
    }
+}
